@@ -1,4 +1,4 @@
-import apiClient from './api';
+// import apiClient from './api';
 import { Product } from '../types/Product';
 
 export const getProducts = (): Product[] => {

@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 const Navbar = () => {
     return (
@@ -6,24 +7,22 @@ const Navbar = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     <div className="flex-shrink-0">
-                        <a href="/" className="text-2xl font-bold">
+                        <Link href="/" className="text-2xl font-bold">
                             My Web Shop
-                        </a>
+                        </Link>
                     </div>
 
                     <div className="hidden md:flex space-x-8">
-                        <a href="/">
+                        <Link href="/">
                             Home
-                        </a>
-                        <a href="/products">
+                        </Link>
+                        <Link href="/products">
                             Products
-                        </a>
+                        </Link>
                     </div>
 
                     <div className="md:hidden">
-                        <button
-                            type="button"
-                        >
+                        <button type="button">
                             <svg
                                 className="h-6 w-6"
                                 xmlns="http://www.w3.org/2000/svg"
