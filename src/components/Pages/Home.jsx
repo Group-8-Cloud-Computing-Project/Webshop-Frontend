@@ -1,8 +1,11 @@
 import React from 'react';
+import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Card } from 'react-bootstrap';
 
 const Home = () => {
-  // Sample product data
+
+    const navigate = useNavigate()
+
   const products = [
     {
       id: 1,
@@ -48,7 +51,7 @@ const Home = () => {
       <Row>
         {products.map((product) => (
           <Col key={product.id} md={4} className="mb-4">
-            <Card className="h-100">
+            <Card className="h-100" onClick={()=> navigate(`/product-details/${product.id}`)}>
               <Card.Img
                 variant="top"
                 src={product.image}
