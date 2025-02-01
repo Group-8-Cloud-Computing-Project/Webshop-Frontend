@@ -8,14 +8,14 @@ import ProductDetails from "./Pages/ProductDetails";
 
 const Layout = () => {
 
- 
+
   return (
     <>
 
-        <BrowserRouter>
-          <Content />
-        </BrowserRouter>
-    
+      <BrowserRouter>
+        <Content />
+      </BrowserRouter>
+
     </>
   );
 };
@@ -25,16 +25,17 @@ const Content = () => {
 
   return (
     <>
-    <Navbar />
+      <Navbar />
       <div className="content">
-          <Routes>
+        <Routes>
           <Route path="*" element={<Navigate to="/" />} />
-              <Route path="/" exact element={<Home />} />       
-              <Route path="/product-details/:id" exact element={<ProductDetails />} />       
-          </Routes>
-          </div>
-          <Footer />
-        </>
-      )}
+          <Route path="/" exact element={<Home />} />
+          <Route path="/product-details/:id" exact element={<ProductDetails />} />
+        </Routes>
+      </div>
+      <Footer />
+    </>
+  )
+}
 
 export default Layout;

@@ -28,7 +28,6 @@ export default function CartModal({ show, handleClose, cartItems, setCart }) {
 
   const handleRemoveItem = (itemId) => {
     const updatedCart = cartItems.filter((item) => item.id !== itemId);
-    console.log('updatedCart', updatedCart)
     setCart(updatedCart);
   };
 
