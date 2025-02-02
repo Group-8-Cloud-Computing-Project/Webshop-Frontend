@@ -1,8 +1,14 @@
 import React from 'react';
+import { useAppState } from "../../context/context";
 import { Button, Table, Image } from "react-bootstrap";
 
 
-const Cart = ({ cartItems, setCart, onCheckout, className }) => {
+const Cart = ({ onCheckout, className }) => {
+
+    const {
+        cart: cartItems, setCart, totalItems
+    } = useAppState();
+
     const calculateTotal = () => {
         return cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
     };

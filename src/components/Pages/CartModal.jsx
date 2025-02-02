@@ -12,7 +12,7 @@ export default function CartModal({ show, handleClose, cartItems, setCart }) {
         <Modal.Title>Your Cart</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Cart cartItems={cartItems} setCart={setCart} onCheckout={() => {
+        <Cart onCheckout={() => {
           handleClose();
           navigate('/checkout');
         }} />
