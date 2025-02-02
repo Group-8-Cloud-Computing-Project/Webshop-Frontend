@@ -52,7 +52,7 @@ Load Balancers: Ensuring high availability and scalability.
 
 1. **Clone the repository:**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Group-8-Cloud-Computing-Project/Webshop-Frontend.git
    cd webshop-frontend
    ```
 
