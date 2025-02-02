@@ -4,9 +4,10 @@ This repository contains the React-based frontend for the Three-Tier Webshop Dem
 
 The demo focuses on:
 
-A dynamic Web Frontend for the shop.
-A robust Middleware with REST API capabilities.
-A reliable Storage Backend for structured (relational/NoSQL) and unstructured (BLOB) data.
+- A dynamic Web Frontend for the shop.
+- A robust Middleware with REST API capabilities.
+- A reliable Storage Backend for structured (relational/NoSQL) and unstructured (BLOB) data.
+
 ## 🏗️ Architecture
 The application follows a Three-Tier Architecture:
 
