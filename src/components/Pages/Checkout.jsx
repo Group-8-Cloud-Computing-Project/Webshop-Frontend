@@ -59,61 +59,67 @@ const Checkout = () => {
                                 <option>Credit Card</option>
                             </Form.Select>
                         </Form.Group>
-                        <Form.Group className="mb-3 p-1" controlId="formCreditCardNumber">
-                            <Form.Control placeholder="Enter Credit Card Number" />
-                        </Form.Group>
-                        <Form.Group className="mb-3 p-1" controlId="formCreditCardExpiry">
-                            <Row>
-                                <Col>
-                                    <Row>
-                                        <Col>
-                                            <Form.Control
-                                                type="number"
-                                                placeholder="MM"
-                                                min="1"
-                                                max="12"
-                                                onInput={(e) => {
-                                                    if (e.target.value > 12) e.target.value = 12;
-                                                    if (e.target.value < 1) e.target.value = 1;
-                                                }}
-                                            />
-                                        </Col>
-                                        <Col>
-                                            <Form.Control
-                                                type="number"
-                                                placeholder="YYYY"
-                                                min={new Date().getFullYear()}
-                                                max={new Date().getFullYear() + 10}
-                                                onInput={(e) => {
-                                                    const currentYear = new Date().getFullYear();
-                                                    if (e.target.value < currentYear) e.target.value = currentYear;
-                                                    if (e.target.value > currentYear + 10) e.target.value = currentYear + 10;
-                                                }}
-                                            />
-                                        </Col>
-                                    </Row>
-                                </Col>
-                                <Col>
-                                    <Form.Control
-                                        type="number"
-                                        placeholder="Enter CVV"
-                                        maxLength={4}
-                                        minLength={3}
-                                        onInput={(e) => {
-                                            e.target.value = e.target.value.slice(0, 4);
-                                            if (e.target.value.length < 3) {
-                                                e.target.setCustomValidity('CVV must be 3 or 4 digits');
-                                            } else {
-                                                e.target.setCustomValidity('');
-                                            }
-                                        }}
-                                    />
-                                </Col>
-                            </Row>
-                        </Form.Group>
-                        <Button>Checkout</Button>
+                        {creditCardDetailsVisible && <>
+                            <Form.Group className="mb-3 p-1" controlId="formCreditCardNumber">
+                                <Form.Control placeholder="Enter Credit Card Number" />
+                            </Form.Group>
+                            <Form.Group className="mb-3 p-1" controlId="formCreditCardExpiry">
+                                <Row>
+                                    <Col>
+                                        <Row>
+                                            <Col>
+                                                <Form.Control
+                                                    type="number"
+                                                    placeholder="MM"
+                                                    min="1"
+                                                    max="12"
+                                                    onInput={(e) => {
+                                                        if (e.target.value > 12) e.target.value = 12;
+                                                        if (e.target.value < 1) e.target.value = 1;
+                                                    }}
+                                                />
+                                            </Col>
+                                            <Col>
+                                                <Form.Control
+                                                    type="number"
+                                                    placeholder="YYYY"
+                                                    min={new Date().getFullYear()}
+                                                    max={new Date().getFullYear() + 10}
+                                                    onInput={(e) => {
+                                                        const currentYear = new Date().getFullYear();
+                                                        if (e.target.value < currentYear) e.target.value = currentYear;
+                                                        if (e.target.value > currentYear + 10) e.target.value = currentYear + 10;
+                                                    }}
+                                                />
+                                            </Col>
+                                        </Row>
+                                    </Col>
+                                    <Col>
+                                        <Form.Control
+                                            type="number"
+                                            placeholder="Enter CVV"
+                                            maxLength={4}
+                                            minLength={3}
+                                            onInput={(e) => {
+                                                e.target.value = e.target.value.slice(0, 4);
+                                                if (e.target.value.length < 3) {
+                                                    e.target.setCustomValidity('CVV must be 3 or 4 digits');
+                                                } else {
+                                                    e.target.setCustomValidity('');
+                                                }
+                                            }}
+                                        />
+                                    </Col>
+                                </Row>
+                            </Form.Group>
+                        </>}
+                        <Row className="m-2">
+                            <Button size="lg">Checkout</Button>
+                        </Row>
                     </Form>
+
                 </Col>
+
             </Row>
 
 
