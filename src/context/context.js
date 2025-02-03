@@ -39,7 +39,11 @@ export const ContextProvider = ({ children }) => {
     });
   }
 
-  const contextValues = { toggleButton, SetToggleButton, cart, setCart, isLoading, setIsLoading, addToCart, totalItems }
+  function clearCart() {
+    setCart([]);
+  }
+
+  const contextValues = { toggleButton, SetToggleButton, cart, setCart, isLoading, setIsLoading, addToCart, totalItems, clearCart }
 
   return (
     <AppStateContext.Provider value={contextValues}>

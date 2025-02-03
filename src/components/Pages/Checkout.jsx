@@ -2,14 +2,17 @@ import { React, useState } from "react";
 import { Container, Row, Col, Image, Button, Card, Form, Carousel, Select } from "react-bootstrap";
 import { useAppState } from "../../context/context";
 import Cart from "../Common/Cart";
+import OrderSuccesfulMessage from "../Common/OrderSuccessfulMessage";
 
 
 const Checkout = () => {
     const {
-        cart
+        cart,
+        clearCart,
     } = useAppState();
 
     const [creditCardDetailsVisible, setCreditCardDetailsVisible] = useState(false);
+    const [orderSuccessfulVisible, setOrderSuccessfulVisible] = useState(false);
 
     const handlePaymentMethodSelection = (e) => {
         if (e.target.value === 'Credit Card') {
@@ -20,8 +23,18 @@ const Checkout = () => {
         }
     }
 
+    if (orderSuccessfulVisible) {
+        return OrderSuccesfulMessage()
+    }
+
     if (cart.length === 0) {
         return <Container className="p-2">No items in the cart.</Container>
+    }
+
+    const handleCheckout = (e) => {
+        e.preventDefault();
+        clearCart();
+        setOrderSuccessfulVisible(true);
     }
 
     return (
@@ -35,22 +48,22 @@ const Checkout = () => {
                 </Col>
                 <Col >
                     <h2>Customer Details</h2>
-                    <Form>
+                    <Form onSubmit={handleCheckout}>
                         <Form.Group className="mb-3 p-1" controlId="formBasicName">
                             <Form.Label>Name</Form.Label>
-                            <Form.Control type="text" placeholder="Enter Name" />
+                            <Form.Control type="text" required placeholder="Enter Name" />
                         </Form.Group>
                         <Form.Group className="mb-3 p-1" controlId="formEmailAddress">
                             <Form.Label>Email Address</Form.Label>
-                            <Form.Control type="text" placeholder="Enter Email Address" />
+                            <Form.Control type="text" required placeholder="Enter Email Address" />
                         </Form.Group>
                         <Form.Group className="mb-3 p-1" controlId="formBasicPhone">
                             <Form.Label>Phone #</Form.Label>
-                            <Form.Control type="text" placeholder="Enter Phone Number" />
+                            <Form.Control type="text" required placeholder="Enter Phone Number" />
                         </Form.Group>
                         <Form.Group className="mb-3 p-1" controlId="formShippingAddress">
                             <Form.Label>Shipping Address</Form.Label>
-                            <Form.Control type="text" placeholder="Enter Shipping Address" />
+                            <Form.Control type="text" required placeholder="Enter Shipping Address" />
                         </Form.Group>
                         <Form.Group className="mb-3 p-1" controlId="formPayment</Form.Group>">
                             <Form.Label>Payment Method</Form.Label>
@@ -61,7 +74,7 @@ const Checkout = () => {
                         </Form.Group>
                         {creditCardDetailsVisible && <>
                             <Form.Group className="mb-3 p-1" controlId="formCreditCardNumber">
-                                <Form.Control placeholder="Enter Credit Card Number" />
+                                <Form.Control placeholder="Enter Credit Card Number" required />
                             </Form.Group>
                             <Form.Group className="mb-3 p-1" controlId="formCreditCardExpiry">
                                 <Row>
@@ -73,6 +86,7 @@ const Checkout = () => {
                                                     placeholder="MM"
                                                     min="1"
                                                     max="12"
+                                                    required
                                                     onInput={(e) => {
                                                         if (e.target.value > 12) e.target.value = 12;
                                                         if (e.target.value < 1) e.target.value = 1;
@@ -85,6 +99,7 @@ const Checkout = () => {
                                                     placeholder="YYYY"
                                                     min={new Date().getFullYear()}
                                                     max={new Date().getFullYear() + 10}
+                                                    required
                                                     onInput={(e) => {
                                                         const currentYear = new Date().getFullYear();
                                                         if (e.target.value < currentYear) e.target.value = currentYear;
@@ -114,15 +129,11 @@ const Checkout = () => {
                             </Form.Group>
                         </>}
                         <Row className="m-2">
-                            <Button size="lg">Checkout</Button>
+                            <Button type="submit" size="lg">Checkout</Button>
                         </Row>
                     </Form>
-
                 </Col>
-
             </Row>
-
-
         </Container>);
 };
 
