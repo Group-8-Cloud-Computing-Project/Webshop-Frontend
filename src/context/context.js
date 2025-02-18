@@ -1,5 +1,4 @@
 import React, { useState, useContext, useReducer, useEffect } from 'react'
-import api from '../api';
 
 const AppStateContext = React.createContext();
 
