@@ -1,9 +1,9 @@
 import { React, useState } from "react";
-import { Container, Row, Col, Image, Button, Card, Form, Carousel, Select } from "react-bootstrap";
+import { Container, Row, Col, Button, Form } from "react-bootstrap";
 import { useAppState } from "../../context/context";
 import Cart from "../Common/Cart";
 import OrderSuccesfulMessage from "../Common/OrderSuccessfulMessage";
-
+import api from "../../api";
 
 const Checkout = () => {
     const {
@@ -31,10 +31,30 @@ const Checkout = () => {
         return <Container className="p-2">No items in the cart.</Container>
     }
 
-    const handleCheckout = (e) => {
+    const handleCheckout = async (e) => {
         e.preventDefault();
-        clearCart();
-        setOrderSuccessfulVisible(true);
+
+        const products = [];
+        cart.forEach((item) => {
+            products.push({ name: item.name, quantity: item.quantity });
+        });
+
+        // Send order to server
+       const response = await api.post('/orders/', {
+            products: products,
+            "total_price": cart.reduce((total, item) => total + Number(item.price) * item.quantity, 0).toFixed(2),
+            "status": "PENDING",
+            "customer_name": e.target.formBasicName.value,
+            "customer_email": e.target.formEmailAddress.value
+        });
+
+        if (response.status !== 201 ) {
+            alert("There was an error placing the order!");
+        } 
+        else {
+            clearCart();
+            setOrderSuccessfulVisible(true);
+        }
     }
 
     return (

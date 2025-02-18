@@ -1,14 +1,29 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useReducer, useEffect } from 'react'
+import api from '../api';
 
 const AppStateContext = React.createContext();
 
 export const useAppState = () => useContext(AppStateContext);
+
+const initialState = {
+  products: [],
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'SET_PRODUCTS':
+      return { ...state, products: action.payload };
+    default:
+      return state;
+  }
+}
 
 export const ContextProvider = ({ children }) => {
   const [toggleButton, SetToggleButton] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [cart, setCart] = useState([])
   const [totalItems, settotalItems] = useState(0)
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
     const calculateTotalItems = () =>
@@ -43,7 +58,7 @@ export const ContextProvider = ({ children }) => {
     setCart([]);
   }
 
-  const contextValues = { toggleButton, SetToggleButton, cart, setCart, isLoading, setIsLoading, addToCart, totalItems, clearCart }
+  const contextValues = { toggleButton, SetToggleButton, cart, setCart, isLoading, setIsLoading, addToCart, totalItems, clearCart, state, dispatch }
 
   return (
     <AppStateContext.Provider value={contextValues}>

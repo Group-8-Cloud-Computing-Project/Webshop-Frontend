@@ -10,7 +10,7 @@ const ProductDetails = () => {
 
   const [quantity, setQuantity] = useState(1);
 
-  const { name, category, images, price, description } = product;
+  const { name, category, additionalImages, price, description } = product;
 
   const handleQuantityChange = (e) => {
     setQuantity(e.target.value);
@@ -20,13 +20,14 @@ const ProductDetails = () => {
     <Container className="py-5">
       <Row className="justify-content-center">
         <Col>
-          <Carousel>
-            {images.map((image, index) => {
+          {additionalImages && additionalImages.length > 0 ? <Carousel>
+            {additionalImages.map((image, index) => {
               return <Carousel.Item key={index}>
                 <Image src={image} alt={name} fluid />
               </Carousel.Item>
             })}
-          </Carousel>
+          </Carousel> : <Image src={product.image} alt={name} fluid />}
+
         </Col>
         <Col>
           <Card>

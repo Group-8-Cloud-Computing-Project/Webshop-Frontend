@@ -1,12 +1,11 @@
 import React from 'react';
 import { useAppState } from "../../context/context";
-import { Button, Table, Image } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 
 
 const Cart = ({ onCheckout, className }) => {
-
     const {
-        cart: cartItems, setCart, totalItems
+        cart: cartItems, setCart
     } = useAppState();
 
     const calculateTotal = () => {
@@ -57,7 +56,7 @@ const Cart = ({ onCheckout, className }) => {
                             {cartItems.map((item) => (
                                 <tr key={item.id}>
                                     <td>{item.name}</td>
-                                    <td>${item.price.toFixed(2)}</td>
+                                    <td>${Number(item.price).toFixed(2)}</td>
                                     <td>
                                         <Button
                                             variant="outline-secondary"

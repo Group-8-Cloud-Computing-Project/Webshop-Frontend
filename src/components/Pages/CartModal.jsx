@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Modal, Button, Table, Image } from "react-bootstrap";
+import React from "react";
+import { Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Cart from "../Common/Cart";
 
