@@ -5,7 +5,6 @@ import Footer from "./Layout/Footer";
 import Home from "./Pages/Home";
 import Checkout from "./Pages/Checkout";
 import ProductDetails from "./Pages/ProductDetails";
-import { Container } from "react-bootstrap";
 
 
 const Layout = () => {
