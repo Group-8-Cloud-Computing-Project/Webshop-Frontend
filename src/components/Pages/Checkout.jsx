@@ -1,5 +1,5 @@
 import { React, useState } from "react";
-import { Container, Row, Col, Button, Form } from "react-bootstrap";
+import { Container, Row, Col, Button, Form, Alert } from "react-bootstrap";
 import { useAppState } from "../../context/context";
 import Cart from "../Common/Cart";
 import OrderSuccesfulMessage from "../Common/OrderSuccessfulMessage";
@@ -13,6 +13,7 @@ const Checkout = () => {
 
     const [creditCardDetailsVisible, setCreditCardDetailsVisible] = useState(false);
     const [orderSuccessfulVisible, setOrderSuccessfulVisible] = useState(false);
+    const [orderError, setOrderError] = useState(null);
 
     const handlePaymentMethodSelection = (e) => {
         if (e.target.value === 'Credit Card') {
@@ -36,30 +37,40 @@ const Checkout = () => {
 
         const products = [];
         cart.forEach((item) => {
-            products.push({ name: item.name, quantity: item.quantity });
+            products.push({ id: item.id, name: item.name, quantity: item.quantity });
         });
 
-        // Send order to server
-       const response = await api.post('/orders/', {
-            products: products,
-            "total_price": cart.reduce((total, item) => total + Number(item.price) * item.quantity, 0).toFixed(2),
-            "status": "PENDING",
-            "customer_name": e.target.formBasicName.value,
-            "customer_email": e.target.formEmailAddress.value
-        });
+        try {
+            // Send order to server
+            await api.post('/orders/', {
+                products: products,
+                "total_price": cart.reduce((total, item) => total + Number(item.price) * item.quantity, 0).toFixed(2),
+                "status": "PENDING",
+                "customer_name": e.target.formBasicName.value,
+                "customer_email": e.target.formEmailAddress.value
+            });
 
-        if (response.status !== 201 ) {
-            alert("There was an error placing the order!");
-        } 
-        else {
             clearCart();
             setOrderSuccessfulVisible(true);
         }
+        catch (ex) {
+            let reason = ex.message;
+            if (ex.response.data.error) {
+                reason = ex.response.data.error;
+            }
+            setOrderError(reason);
+        }
+
     }
 
     return (
         <Container className="p">
             <Row className="p-5">
+                {orderError && <Alert variant="danger">
+                    <Alert.Heading>Error occurred.</Alert.Heading>
+                    {orderError}
+                </Alert>
+                }
                 <Col md={8}>
                     <Container>
                         <h2>Order Summary</h2>
@@ -94,22 +105,22 @@ const Checkout = () => {
                         </Form.Group>
                         {creditCardDetailsVisible && <>
                             <Form.Group className="mb-3 p-1" controlId="formCreditCardNumber">
-                                <Form.Control 
-                                    placeholder="XXXX-XXXX-XXXX-XXXX" 
+                                <Form.Control
+                                    placeholder="XXXX-XXXX-XXXX-XXXX"
                                     required
                                     pattern="^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$"
                                     onInput={(e) => {
                                         let value = e.target.value.replace(/[^\d]/g, '');
-                                        
+
                                         if (value.length > 16) {
                                             value = value.slice(0, 16);
                                         }
-                                        
+
                                         const groups = value.match(/.{1,4}/g) || [];
                                         value = groups.join('-');
-                                        
+
                                         e.target.value = value;
-                                        
+
                                         if (value.length !== 19) {
                                             e.target.setCustomValidity('Please enter a valid credit card number in format XXXX-XXXX-XXXX-XXXX');
                                         } else {

@@ -108,6 +108,13 @@ const Home = () => {
                 <Card.Title>{product.name}</Card.Title>
                 <Card.Text>Category: {product.category}</Card.Text>
                 <Card.Text>Price: €{product.price}</Card.Text>
+                <Card.Text>
+                 <span className={`small stock-indicator ${product.available_quantity > 0 ? 'text-success' : 'text-danger'}`}>
+                    {product.available_quantity > 0 ?
+                      `In Stock (${product.available_quantity} available)` :
+                      'Out of Stock'}
+                  </span>
+                </Card.Text>
               </Card.Body>
             </Card>
           </Col>
