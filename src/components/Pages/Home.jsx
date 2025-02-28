@@ -10,15 +10,31 @@ const Home = () => {
   const {
     state: { products }, dispatch,
   } = useAppState();
-  const [filteredProducts, setFilteredProducts] = React.useState([]);
 
+  const [filteredProducts, setFilteredProducts] = React.useState([]);
   const [sortMode, setSortMode] = React.useState('Sort by Price');
+
+  const sortByPrice = React.useCallback(() => {
+    const parsePrice = x => parseFloat(x.replace(/^€/, '')) || 0
+
+    const sortedProducts = [...products].sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
+    setFilteredProducts(sortedProducts);
+  }, [products]);
+
+  const applyFilter = React.useCallback(() => {
+    if (sortMode === 'Sort by Price') {
+      sortByPrice();
+    } else if (sortMode === 'Sort by Category') {
+      const sortedProducts = [...products].sort((a, b) => a.category != null ? a.category.localeCompare(b.category) : 1);
+      setFilteredProducts(sortedProducts);
+    }
+  }, [sortMode, products, sortByPrice]);
 
   // Initialize filteredProducts when products change
   useEffect(() => {
     setFilteredProducts(products || []);
     applyFilter();
-  }, [products]);
+  }, [products, applyFilter]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -38,7 +54,7 @@ const Home = () => {
 
   useEffect(() => {
     applyFilter();
-  }, [sortMode]);
+  }, [sortMode, applyFilter]);
 
   const handleOnProductsSearch = (e) => {
     if (!e.target.value) {
@@ -57,22 +73,6 @@ const Home = () => {
 
   const handleOnSortProducts = (e) => {
     setSortMode(e.target.value);
-  }
-
-  const applyFilter = () => {
-    if (sortMode === 'Sort by Price') {
-      sortByPrice();
-    } else if (sortMode === 'Sort by Category') {
-      const sortedProducts = [...products].sort((a, b) => a.category != null ? a.category.localeCompare(b.category) : 1);
-      setFilteredProducts(sortedProducts);
-    }
-  }
-
-  const sortByPrice = () => {
-    const parsePrice = x => parseFloat(x.replace(/^\€/, '')) || 0
-
-    const sortedProducts = [...products].sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
-    setFilteredProducts(sortedProducts);
   }
 
   if (!products) {
@@ -100,7 +100,7 @@ const Home = () => {
                 variant="top"
                 src={product.image}
                 alt={product.name}
-                style={{ height: '200px', objectFit: 'cover' }}
+                className="img-fluid"
               />
               <Card.Body>
                 <Card.Title>{product.name}</Card.Title>

@@ -15,7 +15,7 @@ const Cart = ({ onCheckout, className }) => {
     const handleIncreaseQuantity = (itemId) => {
         const updatedCart = cartItems.map((item) => {
             if (item.id === itemId) {
-                return { ...item, quantity: item.quantity + 1 };
+                return { ...item, quantity: Number(item.quantity) + 1 };
             }
             return item;
         });
@@ -25,7 +25,7 @@ const Cart = ({ onCheckout, className }) => {
     const handleDecreaseQuantity = (itemId) => {
         const updatedCart = cartItems.map((item) => {
             if (item.id === itemId && item.quantity > 1) {
-                return { ...item, quantity: item.quantity - 1 };
+                return { ...item, quantity: Number(item.quantity) - 1 };
             }
             return item;
         });
