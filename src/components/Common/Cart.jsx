@@ -56,7 +56,7 @@ const Cart = ({ onCheckout, className }) => {
                             {cartItems.map((item) => (
                                 <tr key={item.id}>
                                     <td>{item.name}</td>
-                                    <td>${Number(item.price).toFixed(2)}</td>
+                                    <td>€{Number(item.price).toFixed(2)}</td>
                                     <td>
                                         <Button
                                             variant="outline-secondary"
@@ -74,7 +74,7 @@ const Cart = ({ onCheckout, className }) => {
                                             +
                                         </Button>
                                     </td>
-                                    <td>${(item.price * item.quantity).toFixed(2)}</td>
+                                    <td>€{(item.price * item.quantity).toFixed(2)}</td>
                                     <td>
                                         <Button
                                             variant="danger"
@@ -90,7 +90,7 @@ const Cart = ({ onCheckout, className }) => {
                     </Table>
                     {onCheckout &&
                         <div className="d-flex justify-content-between">
-                            <h5>Total: ${calculateTotal()}</h5>
+                            <h5>Total: €{calculateTotal()}</h5>
                             <Button variant="success" onClick={onCheckout}>Checkout</Button>
                         </div>
                     }

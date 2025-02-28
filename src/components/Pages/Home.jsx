@@ -12,9 +12,12 @@ const Home = () => {
   } = useAppState();
   const [filteredProducts, setFilteredProducts] = React.useState([]);
 
+  const [sortMode, setSortMode] = React.useState('Sort by Price');
+
   // Initialize filteredProducts when products change
   useEffect(() => {
     setFilteredProducts(products || []);
+    applyFilter();
   }, [products]);
 
   useEffect(() => {
@@ -50,13 +53,25 @@ const Home = () => {
   }
 
   const handleOnSortProducts = (e) => {
-    if (e.target.value === 'Sort by Price') {
-      const sortedProducts = [...products].sort((a, b) => a.price.localeCompare(b.name));
-      setFilteredProducts(sortedProducts);
-    } else if (e.target.value === 'Sort by Category') {
+    setSortMode(e.target.value);
+
+    applyFilter();
+  }
+
+  const applyFilter = () => {
+    if (sortMode === 'Sort by Price') {
+      sortByPrice();
+    } else if (sortMode === 'Sort by Category') {
       const sortedProducts = [...products].sort((a, b) => a.category != null ? a.category.localeCompare(b.category) : 1);
       setFilteredProducts(sortedProducts);
     }
+  }
+
+  const sortByPrice = () => {
+    const parsePrice = x => parseFloat(x.replace(/^\€/, '')) || 0
+
+    const sortedProducts = [...products].sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
+    setFilteredProducts(sortedProducts);
   }
 
   if (!products) {
@@ -89,7 +104,7 @@ const Home = () => {
               <Card.Body>
                 <Card.Title>{product.name}</Card.Title>
                 <Card.Text>Category: {product.category}</Card.Text>
-                <Card.Text>Price: {product.price}</Card.Text>
+                <Card.Text>Price: €{product.price}</Card.Text>
               </Card.Body>
             </Card>
           </Col>

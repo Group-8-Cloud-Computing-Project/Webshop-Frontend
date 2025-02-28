@@ -33,7 +33,7 @@ const ProductDetails = () => {
           <Card>
             <Card.Body>
               <Card.Title>{name}</Card.Title>
-              <Card.Subtitle className="mb-2 text-muted">${price}</Card.Subtitle>
+              <Card.Subtitle className="mb-2 text-muted">€{price}</Card.Subtitle>
               <Card.Text>
                 <Row className="p-2">
                   {description}
