@@ -94,7 +94,29 @@ const Checkout = () => {
                         </Form.Group>
                         {creditCardDetailsVisible && <>
                             <Form.Group className="mb-3 p-1" controlId="formCreditCardNumber">
-                                <Form.Control placeholder="Enter Credit Card Number" required />
+                                <Form.Control 
+                                    placeholder="XXXX-XXXX-XXXX-XXXX" 
+                                    required
+                                    pattern="^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$"
+                                    onInput={(e) => {
+                                        let value = e.target.value.replace(/[^\d]/g, '');
+                                        
+                                        if (value.length > 16) {
+                                            value = value.slice(0, 16);
+                                        }
+                                        
+                                        const groups = value.match(/.{1,4}/g) || [];
+                                        value = groups.join('-');
+                                        
+                                        e.target.value = value;
+                                        
+                                        if (value.length !== 19) {
+                                            e.target.setCustomValidity('Please enter a valid credit card number in format XXXX-XXXX-XXXX-XXXX');
+                                        } else {
+                                            e.target.setCustomValidity('');
+                                        }
+                                    }}
+                                />
                             </Form.Group>
                             <Form.Group className="mb-3 p-1" controlId="formCreditCardExpiry">
                                 <Row>

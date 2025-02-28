@@ -13,28 +13,35 @@ const Home = () => {
 
   const [filteredProducts, setFilteredProducts] = React.useState([]);
   const [sortMode, setSortMode] = React.useState('Sort by Price');
+  const [searchString, setSearchString] = React.useState('');
 
-  const sortByPrice = React.useCallback(() => {
-    const parsePrice = x => parseFloat(x.replace(/^€/, '')) || 0
-
-    const sortedProducts = [...products].sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
-    setFilteredProducts(sortedProducts);
-  }, [products]);
-
-  const applyFilter = React.useCallback(() => {
-    if (sortMode === 'Sort by Price') {
-      sortByPrice();
-    } else if (sortMode === 'Sort by Category') {
-      const sortedProducts = [...products].sort((a, b) => a.category != null ? a.category.localeCompare(b.category) : 1);
-      setFilteredProducts(sortedProducts);
+  const sortProducts = React.useCallback((productsToSort) => {
+    if (!productsToSort) {
+      return [];
     }
-  }, [sortMode, products, sortByPrice]);
 
-  // Initialize filteredProducts when products change
+    let sortedProducts = [...productsToSort]
+    if (sortMode === 'Sort by Price') {
+      const parsePrice = x => parseFloat(x.replace(/^€/, '')) || 0
+      sortedProducts.sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
+    } else if (sortMode === 'Sort by Category') {
+      sortedProducts.sort((a, b) => a.category != null ? a.category.localeCompare(b.category) : 1);
+    }
+    return sortedProducts;
+  }, [sortMode]);
+
+  // Initialize filteredProducts when products change or sort mode changes
   useEffect(() => {
-    setFilteredProducts(products || []);
-    applyFilter();
-  }, [products, applyFilter]);
+    if (searchString) {
+      setFilteredProducts(
+        sortProducts([...products].filter((product) => product.name.toLowerCase().includes(searchString.toLowerCase())))
+      );
+      return;
+    }
+
+    const sorted = sortProducts(products || []);
+    setFilteredProducts(sorted);
+  }, [products, sortMode, sortProducts, searchString]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -52,23 +59,18 @@ const Home = () => {
     fetchProducts();
   }, [dispatch]); // Dependency array ensures this runs once on mount
 
-  useEffect(() => {
-    applyFilter();
-  }, [sortMode, applyFilter]);
-
   const handleOnProductsSearch = (e) => {
-    if (!e.target.value) {
-      setFilteredProducts(products);
+    let searchString = e.target.value;
+    setSearchString(searchString);
+
+    if (!searchString) {
+      setFilteredProducts(sortProducts(products));
       return;
     }
 
-    let searchString = e.target.value;
-
-    const filteredProducts = products.filter((product) => {
-      return product.name.toLowerCase().includes(searchString.toLowerCase());
-    });
-
-    setFilteredProducts(filteredProducts);
+    setFilteredProducts(
+      sortProducts([...products].filter((product) => product.name.toLowerCase().includes(searchString.toLowerCase())))
+    );
   }
 
   const handleOnSortProducts = (e) => {
