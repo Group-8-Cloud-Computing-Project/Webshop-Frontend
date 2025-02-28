@@ -37,7 +37,6 @@ const Cart = ({ onCheckout, className }) => {
         setCart(updatedCart);
     };
 
-
     return (
         <>
             {cartItems?.length > 0 ? (

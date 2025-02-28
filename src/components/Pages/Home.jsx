@@ -36,6 +36,9 @@ const Home = () => {
     fetchProducts();
   }, [dispatch]); // Dependency array ensures this runs once on mount
 
+  useEffect(() => {
+    applyFilter();
+  }, [sortMode]);
 
   const handleOnProductsSearch = (e) => {
     if (!e.target.value) {
@@ -54,8 +57,6 @@ const Home = () => {
 
   const handleOnSortProducts = (e) => {
     setSortMode(e.target.value);
-
-    applyFilter();
   }
 
   const applyFilter = () => {
