@@ -13,8 +13,6 @@ const ProductDetails = () => {
 
   const { name, category, additionalImages, price, description, available_quantity } = product;
 
-  console.log(product);
-
   const handleQuantityChange = (e) => {
     const value = parseInt(e.target.value);
     if (value > available_quantity) {

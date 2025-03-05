@@ -14,7 +14,7 @@ const Cart = ({ onCheckout, className }) => {
 
     const handleIncreaseQuantity = (itemId) => {
         const updatedCart = cartItems.map((item) => {
-            if (item.id === itemId) {
+            if (item.id === itemId && item.available_quantity >= Number(item.quantity) + 1) {
                 return { ...item, quantity: Number(item.quantity) + 1 };
             }
             return item;
