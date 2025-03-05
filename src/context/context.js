@@ -22,6 +22,7 @@ export const ContextProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [cart, setCart] = useState([])
   const [totalItems, settotalItems] = useState(0)
+  const [cartError, setCartError] = useState("")
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
@@ -36,11 +37,18 @@ export const ContextProvider = ({ children }) => {
       const existingItemIndex = prevCart.findIndex((item) => item.id === newItem.id);
 
       if (existingItemIndex !== -1) {
-        return prevCart.map((item, index) =>
-          index === existingItemIndex
-            ? { ...item, quantity: Number(item.quantity) + Number(quantity) }
-            : item
-        );
+        return prevCart.map((item, index) => {
+          if (index === existingItemIndex) {
+            if (item.quantity + quantity > item.available_quantity) {
+              setCartError('Sorry, we only have ' + item.available_quantity + ' of this item in stock. Please reduce your quantity.');
+              return item;
+            }
+            return { ...item, quantity: Number(item.quantity) + Number(quantity) }
+          }
+          else {
+            return item;
+          }
+        });
       } else {
         return [
           ...prevCart,
@@ -57,7 +65,7 @@ export const ContextProvider = ({ children }) => {
     setCart([]);
   }
 
-  const contextValues = { toggleButton, SetToggleButton, cart, setCart, isLoading, setIsLoading, addToCart, totalItems, clearCart, state, dispatch }
+  const contextValues = { toggleButton, SetToggleButton, cart, setCart, isLoading, setIsLoading, addToCart, totalItems, clearCart, state, dispatch, cartError, setCartError }
 
   return (
     <AppStateContext.Provider value={contextValues}>
